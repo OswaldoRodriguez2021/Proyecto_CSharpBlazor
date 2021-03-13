@@ -1,0 +1,12 @@
+C:\Udemy Aprende Blazor desde Cero\Proyecto\BlazorExpenseTracker.Data\bin\Debug\netstandard2.0\BlazorExpenseTracker.Data.deps.json
+C:\Udemy Aprende Blazor desde Cero\Proyecto\BlazorExpenseTracker.Data\bin\Debug\netstandard2.0\BlazorExpenseTracker.Data.dll
+C:\Udemy Aprende Blazor desde Cero\Proyecto\BlazorExpenseTracker.Data\bin\Debug\netstandard2.0\BlazorExpenseTracker.Data.pdb
+C:\Udemy Aprende Blazor desde Cero\Proyecto\BlazorExpenseTracker.Data\bin\Debug\netstandard2.0\BlazorExpenseTracker.Model.dll
+C:\Udemy Aprende Blazor desde Cero\Proyecto\BlazorExpenseTracker.Data\bin\Debug\netstandard2.0\BlazorExpenseTracker.Model.pdb
+C:\Udemy Aprende Blazor desde Cero\Proyecto\BlazorExpenseTracker.Data\obj\Debug\netstandard2.0\BlazorExpenseTracker.Data.csprojAssemblyReference.cache
+C:\Udemy Aprende Blazor desde Cero\Proyecto\BlazorExpenseTracker.Data\obj\Debug\netstandard2.0\BlazorExpenseTracker.Data.AssemblyInfoInputs.cache
+C:\Udemy Aprende Blazor desde Cero\Proyecto\BlazorExpenseTracker.Data\obj\Debug\netstandard2.0\BlazorExpenseTracker.Data.AssemblyInfo.cs
+C:\Udemy Aprende Blazor desde Cero\Proyecto\BlazorExpenseTracker.Data\obj\Debug\netstandard2.0\BlazorExpenseTracker.Data.csproj.CopyComplete
+C:\Udemy Aprende Blazor desde Cero\Proyecto\BlazorExpenseTracker.Data\obj\Debug\netstandard2.0\BlazorExpenseTracker.Data.dll
+C:\Udemy Aprende Blazor desde Cero\Proyecto\BlazorExpenseTracker.Data\obj\Debug\netstandard2.0\BlazorExpenseTracker.Data.pdb
+C:\Udemy Aprende Blazor desde Cero\Proyecto\BlazorExpenseTracker.Data\obj\Debug\netstandard2.0\BlazorExpenseTracker.Data.csproj.CoreCompileInputs.cache

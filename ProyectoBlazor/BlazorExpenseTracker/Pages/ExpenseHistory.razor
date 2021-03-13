@@ -1,0 +1,86 @@
+﻿
+@inject IExpenseService ExpenseService
+
+<h3>Historial </h3>
+<p>@Message</p>
+
+@if (expenses == null)
+{
+    <p><em>No se encontraron datos ... </em></p>
+}
+else
+{ 
+    <div class="container">
+
+        <div class="row">
+            <div class="col-4 alert-light">
+                <h4> <i> Monto </i> </h4>
+            </div>
+            <div class="col-4 alert-light">
+                <h4> <i> Nombre de la Categoria </i> </h4>
+            </div>
+            <div class="col-4 alert-light">
+                <h4> <i> Fecha </i> </h4>
+            </div>
+        </div>
+
+        @foreach (var expense in expenses)
+        {
+            <div class="row table-hover" @onclick="@(() => SelectedExpenseChange(expense.id))">
+            
+                <div class="col-4 alert-success" style="@GetTextColor(expense.id)">
+                    @expense.Amount
+                </div>
+            
+                <div class=" col-4 alert-success">
+                    @expense.Category.Name
+                </div>
+            
+                <div class="col-4 alert-success">
+                    @expense.TransactionDate.ToString("dd-MM-yyyy")
+                </div>
+
+            </div>
+         }
+
+        
+    </div>
+
+}
+
+@code {
+
+    public IEnumerable<Expense> expenses { get; set; }
+    public string Message { get; set; }
+    [CascadingParameter] protected Expense SelectedExpense { get; set;}
+
+    protected async Task SelectedExpenseChange(int expenseId)
+    {
+        var expense = await ExpenseService.GetExpenseDetails(expenseId);
+        SelectedExpense.SelectedExpenseChange(expense);
+
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            expenses = (await ExpenseService.GetAllExpense());
+
+        }
+        catch (Exception e)
+        {
+            Message = "Error inesperado " + e.Message;
+        }
+
+    }
+
+
+    protected string GetTextColor(int expenseId)
+    {
+        var exp = expenses.FirstOrDefault(e => e.id == expenseId);
+        return exp.ExpenseType == ExpenseType.Income ? "color:green" : "color:red";
+    }
+
+}
+ 

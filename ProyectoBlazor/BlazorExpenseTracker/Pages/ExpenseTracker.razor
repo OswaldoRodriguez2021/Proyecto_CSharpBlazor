@@ -1,0 +1,53 @@
+﻿@page "/ExpenseTracker"
+
+@using Model
+
+@implements IDisposable
+
+<h3>ExpenseTracker</h3>
+
+<CascadingValue Value="expense">
+
+    <TabControl>
+
+        <TabTitle>
+            <img src="Images/@(context.ImageSourse).png" style="width:40px; height:40px" />  @context.Text
+        </TabTitle>
+
+        <ChildContent>
+            
+            <TabPage Text="Expense" ImageSourse="minus">
+                <ExpenseDetails ExpenseType="@Model.ExpenseType.Expense"></ExpenseDetails>
+            </TabPage>
+
+            <TabPage Text="Income" ImageSourse="Plus">
+                <ExpenseDetails ExpenseType="@Model.ExpenseType.Income"></ExpenseDetails>
+            </TabPage>
+
+        </ChildContent>
+
+    </TabControl>
+
+    <ExpenseHistory></ExpenseHistory>
+     
+</CascadingValue>
+
+@code {
+    public Expense expense;
+
+    protected override Task OnInitializedAsync()
+    {
+        expense = new Expense();
+        expense.OnSelectedExpenseChanged += StateHasChanged;
+
+        return base.OnInitializedAsync();
+
+    }
+
+    public void Dispose()
+    {
+        expense.OnSelectedExpenseChanged -= StateHasChanged;
+
+    }
+
+}

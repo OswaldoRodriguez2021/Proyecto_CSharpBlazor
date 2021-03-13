@@ -1,0 +1,145 @@
+﻿@page "/ExpenseDetails"
+
+@inject ICategoriService CategoriServices
+@inject IExpenseService ExpenseService
+@inject IJSRuntime JsRunTime
+
+<h3>Details</h3>
+<!--                       Se agrega  OnValidSubmit cuando el formulario sea valido ejecutar SaveExpense   -->
+<EditForm Model="@expense" OnValidSubmit="SaveExpense">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <label>
+                    Cantidad:
+                </label>
+            </div>
+            <div class="col-6">
+                <InputNumber class="form-control" @bind-Value="@expense.Amount"></InputNumber>
+                <ValidationMessage For="@(() => expense.Amount)"></ValidationMessage>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label>
+                    Fecha de la Transaccion:
+                </label>
+            </div>
+            <div class="col-6">
+                <InputDate class="form-control" @bind-Value="@expense.TransactionDate"></InputDate>
+                <ValidationMessage For="@(()=> expense.TransactionDate )"></ValidationMessage>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label>
+                    Categoria:
+                </label>
+            </div>
+            <div class="col-6">
+                <InputSelect class ="form-control" @bind-Value="@expense.CategoryID">
+                    @foreach (Category item in categories)
+                    {
+                        <option value="@item.Id"> @item.Name </option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label>
+                    Gastos:
+                </label>
+            </div>
+            <div class="col-6">
+                <InputSelect disable="true" @bind-Value="@expense.ExpenseType">
+                    @foreach (Category item in categories)
+                    {
+                        <option value="@(ExpenseType.Income)"> Gastos</option>
+                        <option value="@(ExpenseType.Expense)">ingresos</option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+        <div class="row bg-info">
+            <div class="col-4 align-items-start">
+                <input type="submit" class="btn btn-success" value="@(expense.id == 0 ? "Grabar": "Modificar" )" />
+            </div>
+            <div class="col-4 align-items-center">
+                <input type="button" class="btn btn-secondary" value="Cancelar"
+                       style="@GetCancelButtonStyle()"
+                       @onclick="Cancel" />
+            </div>
+            <div class="col-4 align-items-end">
+                <input type="button" class="btn btn-secondary" value="Eliminar"
+                       style="@GetCancelButtonStyle()"
+                       @onclick="DeleteExpense" />
+            </div>
+        </div>
+    </div>
+
+</EditForm>
+
+@code {
+
+    // private Expense expense = new Expense();
+
+    [CascadingParameter] protected Expense expense { get; set; }
+    private IEnumerable<Category> categories = new List<Category>();
+
+    [Parameter]
+    public ExpenseType ExpenseType { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        categories = await CategoriServices.GetAllCategories();
+
+        if (expense.id == 0)
+        {
+            expense.CategoryID = categories.FirstOrDefault().Id.ToString();
+            expense.ExpenseType = ExpenseType;
+        }
+
+    }
+
+    protected async Task SaveExpense()
+    {
+        await ExpenseService.SaveExpense(expense);
+        ClearExpense();
+        expense.SelectedExpenseChange(expense);
+    }
+
+    protected string GetCancelButtonStyle()
+    {
+        return expense.id == 0 ? "display:none" : "";
+    }
+
+    public void Cancel()
+    {
+        ClearExpense();
+    }
+
+    public void ClearExpense()
+    {
+
+        expense.id = 0;
+        expense.Amount = 0;
+        expense.TransactionDate = DateTime.MinValue;
+        expense.CategoryID = categories.FirstOrDefault().Id.ToString();
+        expense.ExpenseType = ExpenseType;
+    }
+
+    protected async Task DeleteExpense()
+    {
+        bool confirmed = await JsRunTime.InvokeAsync<bool>("confirm","Con seguridad desea eliminar el registro");
+        if(confirmed)
+        {
+            await ExpenseService.DeleteExpense(expense.id);
+            expense.SelectedExpenseChange(expense);
+            ClearExpense();
+        }
+    }
+
+} 
+ 

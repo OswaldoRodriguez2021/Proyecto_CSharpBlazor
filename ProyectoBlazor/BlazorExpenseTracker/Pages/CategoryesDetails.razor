@@ -1,0 +1,92 @@
+﻿@page "/CategoriesDetails"
+@page "/CategoriesDetails/{id:int}"
+
+@inject ICategoriService CategoryService
+@inject NavigationManager NavigationManager
+
+<div class="modal" tabindex="-1" style="display:block" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>CategoryesDetails</h3>
+            </div>
+            <div class="modal-body">
+                <EditForm Model="@category" OnValidSubmit="SaveCategory">
+                    <DataAnnotationsValidator />
+
+                            <!--
+                            DataAnnotationsValidator Es para activar las validaciones
+                            ValidationSummary Es para activar los mensajes de las validaciones
+                            Luego en lugar de   ValidationSummary se púede utilizar ValidationMessage
+                        -->
+
+                    <div class="container">
+
+                        <div class="row">
+                            <div class="col-4 alert-light">
+                                <h4> <i> Nombre de la Categoria </i></h4>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-8 text-center form-row ">
+                                <input type="text" class="form-control" @bind="category.Name" />
+                            </div>
+                            <div class="col-4 form-control">
+                                <ValidationMessage For="@(()=> category.Name)" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-8 text-center form-control">
+                                <input type="submit" value="Guardar" />
+                                <input type="button" value="Cancelar " @onclick="Cancel" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                </EditForm>
+            </div>
+        </div>
+    </div>
+    
+
+   
+
+</div>
+
+    @code {
+
+        [Parameter]
+        public int id { get; set; }
+
+        Category category = new Category();
+
+        protected async override Task OnInitializedAsync()
+        {
+            if (id > 0) //If no Id has been passed, then it is a new Category
+            {
+                category = await CategoryService.GetCategoryDetails(id);
+            }
+        }
+
+
+        protected async Task SaveCategory()
+        {
+            await CategoryService.SaveCategory(category);
+            navigateToCategories();
+        }
+
+        public void Cancel()
+        {
+            navigateToCategories();
+        }
+
+        public void navigateToCategories()
+        {
+            NavigationManager.NavigateTo("/categories");
+        }
+    }
+

@@ -1,0 +1,37 @@
+﻿
+
+05/11/2020
+En el proyecto UI
+
+En la pagina categories.razor  
+
+Se elaboro lo siguiente 
+
+<!--
+
+    Se utilizo solo para llenar los datos sin conexion a base de datos
+
+ @@code {
+    private IEnumerable<Category> categories = new List<Category>() {
+      new Category{Id=1,Name="Shopping"},
+      new Category{Id=2,Name="Fuel"}
+    };
+}
+-->
+
+En el proyecto UI 
+
+En el GetStreamAsync se cambio la direccion del llamado de la API 
+
+ public async Task<Category> GetCategoryDetails(int id)
+        {
+            return await JsonSerializer.DeserializeAsync<Category>
+                (
+                   await _HttpClient.GetStreamAsync($"https:/localhost:44324/api/controller/{id}"),
+                   new JsonSerializerOptions() {PropertyNameCaseInsensitive = true}
+                  /**
+                  await _HttpClient.GetStreamAsync($"api/category/{id}"),
+                   new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }
+                  **/
+                );
+        }
